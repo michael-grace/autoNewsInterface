@@ -1,0 +1,9 @@
+{
+    "logFile": "thonkyBoi.log",
+    "apiKey": "*****",
+    "newsOnJukebox": true,
+    "obShows": [12345],
+    "autonewsRequests": [
+        { "timeslotID": 147279, "autoNewsStart": false, "autoNewsEnd": true }
+    ]
+}

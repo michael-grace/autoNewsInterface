@@ -1,0 +1,59 @@
+<html style="font-family: Arial;">
+<head>
+<title>URY AutoNews Selection</title>
+<h2>AutoNews Selection</h2>
+</head>
+<body>
+<div style="float: left;">
+
+{{ if not .Timeslots }}
+<p style="clear:both; margin: 1em;"> No Shows Available Today </p>
+{{ end }}
+
+{{range .Timeslots}}
+<button style="border: 1px solid blue; border-radius: 3px; padding: 5px; display: block; background: white; margin: 10px;" onclick="button({{.Timeslotid}})">{{.Title}}</button>
+{{end}}
+</div>
+
+<div style="float: left;">
+{{range .Timeslots}}
+
+<form id="form{{.Timeslotid}}" class="autonewsform" style="margin:5em;">
+<input type="hidden"  name="timeslotid" value="{{.Timeslotid}}">
+<input type="checkbox" name="S" {{if .AutoNewsStart}}checked{{end}}>
+<label for="S">AutoNews at Start of Show</label>
+<br>
+<input type="checkbox" name="E" {{if .AutoNewsEnd}}checked{{end}}>
+<label for="E">AutoNews at End of Show</label>
+<br>
+<input type="submit" style="border: 1px solid blue; border-radius: 3px; padding: 5px; background: white; margin: 10px;">
+</form>
+
+{{end}}
+</div>
+
+<p style="clear:both; margin: 1em;">Any problems, please contact Computing team (#computing on the URY Slack)</p>
+
+<script>
+
+function hideforms(){
+    var forms = document.getElementsByClassName("autonewsform");
+    for (var i = 0; i<forms.length; i++){
+        forms[i].style.display = "none";
+    }
+}
+
+function button(timeslotid){
+    hideforms();
+    document.getElementById("form" + timeslotid).style.display = "block";
+}
+
+hideforms();
+
+</script>
+
+</body>
+
+
+
+</html>
