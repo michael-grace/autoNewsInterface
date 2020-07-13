@@ -19,7 +19,6 @@ type configAutoNews struct {
 }
 
 type thonkyConfigBoi struct {
-	LogFile          string           `json:"logFile"`
 	APIKey           string           `json:"apiKey"`
 	NewsOnJukebox    bool             `json:"newsOnJukebox"`
 	OBShows          []int            `json:"obShows"`
