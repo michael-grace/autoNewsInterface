@@ -1,59 +1,80 @@
-<html style="font-family: Arial;">
-<head>
-<title>URY AutoNews Selection</title>
-<h2>AutoNews Selection</h2>
-</head>
-<body>
-<div style="float: left;">
+<html style="padding:10px;">
+    <head>
+        <title>URY AutoNews Selection</title>
+        <h2>AutoNews Selection</h2>
 
-{{ if not .Timeslots }}
-<p style="clear:both; margin: 1em;"> No Shows Available Today </p>
-{{ end }}
+        <!-- Bootstrap-->
 
-{{range .Timeslots}}
-<button style="border: 1px solid blue; border-radius: 3px; padding: 5px; display: block; background: white; margin: 10px;" onclick="button({{.Timeslotid}})">{{.Title}}</button>
-{{end}}
-</div>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
-<div style="float: left;">
-{{range .Timeslots}}
+    </head>
+    <body>
 
-<form id="form{{.Timeslotid}}" class="autonewsform" style="margin:5em;">
-<input type="hidden"  name="timeslotid" value="{{.Timeslotid}}">
-<input type="checkbox" name="S" {{if .AutoNewsStart}}checked{{end}}>
-<label for="S">AutoNews at Start of Show</label>
-<br>
-<input type="checkbox" name="E" {{if .AutoNewsEnd}}checked{{end}}>
-<label for="E">AutoNews at End of Show</label>
-<br>
-<input type="submit" style="border: 1px solid blue; border-radius: 3px; padding: 5px; background: white; margin: 10px;">
-</form>
+        {{ if .DataDriven }}
+            <div class="alert alert-success alert-dismissable" id="success-alert">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Success!</strong> AutoNews Preference Updated
+            </div>
+        {{ end }}
 
-{{end}}
-</div>
+        <div style="float: left;">
 
-<p style="clear:both; margin: 1em;">Any problems, please contact Computing team (#computing on the URY Slack)</p>
+            {{ if not .Timeslots }}
+                <p style="clear:both; margin: 1em;"> No Shows Available Today </p>
+            {{ end }}
 
-<script>
+            {{range .Timeslots}}
+                <button class="selbtn btn btn-outline-primary" style="display:block; margin: 10px" onclick="button({{.Timeslotid}})" id=btn{{.Timeslotid}}>{{.Title}}</button>
+            {{end}}
 
-function hideforms(){
-    var forms = document.getElementsByClassName("autonewsform");
-    for (var i = 0; i<forms.length; i++){
-        forms[i].style.display = "none";
-    }
-}
+        </div>
 
-function button(timeslotid){
-    hideforms();
-    document.getElementById("form" + timeslotid).style.display = "block";
-}
+        <div style="float: left;">
+            {{range .Timeslots}}
 
-hideforms();
+                <form id="form{{.Timeslotid}}" class="autonewsform" style="margin:5em;">
+                    <input type="hidden"  name="timeslotid" value="{{.Timeslotid}}">
+                    <input type="checkbox" name="S" {{if .AutoNewsStart}}checked{{end}}>
+                    <label for="S">AutoNews at Start of Show</label>
+                    <br>
+                    <input type="checkbox" name="E" {{if .AutoNewsEnd}}checked{{end}}>
+                    <label for="E">AutoNews at End of Show</label>
+                    <br>
+                    <input type="submit" class="btn btn-primary" >
+                </form>
 
-</script>
+            {{end}}
+        </div>
 
-</body>
+        <p style="clear:both; margin: 1em;">Any problems, please contact Computing team (#computing on the URY Slack)</p>
 
+        <script>
 
+            function hideforms(){
+                var forms = document.getElementsByClassName("autonewsform");
+                for (var i = 0; i<forms.length; i++){
+                    forms[i].style.display = "none";
+                }
+                var btns = document.getElementsByClassName("selbtn");
+                for (var i = 0; i<btns.length; i++){
+                    btns[i].classList.remove("active")
+                }
+            }
+
+            function button(timeslotid){
+                hideforms();
+                document.getElementById("form" + timeslotid).style.display = "block";
+                document.getElementById("btn" + timeslotid).classList.add("active");
+            }
+
+            hideforms();
+            setTimeout(function(){document.getElementById("success-alert").style.display = "none";}, 3000);
+
+        </script>
+
+    </body>
 
 </html>

@@ -2,10 +2,10 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/UniversityRadioYork/myradio-go"
 	"html/template"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -25,7 +25,12 @@ type thonkyConfigBoi struct {
 	AutonewsRequests []configAutoNews `json:"autonewsRequests"`
 }
 
-const configFilePath = "config.json"
+const (
+	// Make sure these are right if you've built something pulled from GitHub
+	configFilePath = "config.json"
+	apiKey         = "*****" // Website Public API-Key
+	port           = 3000
+)
 
 func autonewsCheck(timeslotid int, config thonkyConfigBoi) [2]bool {
 	for _, value := range config.AutonewsRequests {
@@ -37,7 +42,7 @@ func autonewsCheck(timeslotid int, config thonkyConfigBoi) [2]bool {
 }
 
 func main() {
-	session, err := myradio.NewSession("******") // Website Public API-Key
+	session, err := myradio.NewSession(apiKey)
 	if err != nil {
 		panic(err)
 	}
@@ -78,7 +83,7 @@ func main() {
 			if !complete {
 				config.AutonewsRequests = append(config.AutonewsRequests, configAutoNews{TimeslotID: timeslotint, AutoNewsStart: autonews[0], AutoNewsEnd: autonews[1]})
 			}
-			log.Printf("Timeslot ID: %v, AutoNews Start: %v, AutoNews End: %v", timeslotint, autonews[0], autonews[1])
+			fmt.Printf("Timeslot ID: %v, AutoNews Start: %v, AutoNews End: %v\n", timeslotint, autonews[0], autonews[1])
 		}
 
 		year, week := time.Now().ISOWeek()
@@ -112,9 +117,11 @@ func main() {
 		}
 
 		data := struct {
-			Timeslots []timeslot
+			Timeslots  []timeslot
+			DataDriven bool
 		}{
-			Timeslots: timeslots,
+			Timeslots:  timeslots,
+			DataDriven: ok,
 		}
 
 		tmpl, err := template.ParseFiles("index.html")
@@ -134,5 +141,5 @@ func main() {
 		newConfig, _ := json.Marshal(config)
 		file.WriteString(string(newConfig))
 	})
-	http.ListenAndServe(":3000", nil) // Port number here
+	http.ListenAndServe(fmt.Sprintf(":%v", port), nil)
 }
