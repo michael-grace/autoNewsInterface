@@ -62,6 +62,7 @@ func main() {
 		panic(err)
 	}
 
+	// Main Template HTML Handler (index.html)
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 
 		configFile, err := os.Open(interfaceConfig.SwitcherConfigFilePath)
@@ -157,12 +158,27 @@ func main() {
 		file.WriteString(string(newConfig))
 	})
 
+	// main.js Handler
 	http.HandleFunc("/main.js", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, interfaceConfig.JSTemplatePath)
 	})
 
+	// styles.css Handler
 	http.HandleFunc("/styles.css", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, interfaceConfig.CSSTemplatePath)
+	})
+
+	// JSON Return of AutoSelector Decisioning Process
+	http.HandleFunc("/autoselector", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		data := struct {
+			Hour    int    `json:"hour"`
+			Content [3]int `json:"content"`
+		}{
+			Hour:    time.Now().Hour(),
+			Content: [3]int{0, 0, 0},
+		}
+		json.NewEncoder(w).Encode(data)
 	})
 
 	http.ListenAndServe(fmt.Sprintf(":%v", interfaceConfig.Port), nil)
