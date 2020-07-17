@@ -29,7 +29,9 @@ type interfaceConfig struct {
 	SwitcherConfigFilePath string `json:"switcherConfigFilePath"`
 	APIKey                 string `json:"apiKey"`
 	Port                   int    `json:"port"`
-	TemplatePath           string `json:"templatePath"`
+	HTMLTemplatePath       string `json:"htmlTemplatePath"`
+	JSTemplatePath         string `json:"jsTemplatePath"`
+	CSSTemplatePath        string `json:"cssTemplatePath"`
 }
 
 const (
@@ -137,7 +139,7 @@ func main() {
 			DataDriven: ok,
 		}
 
-		tmpl, err := template.ParseFiles(interfaceConfig.TemplatePath)
+		tmpl, err := template.ParseFiles(interfaceConfig.HTMLTemplatePath)
 		if err != nil {
 			panic(err)
 		}
@@ -154,5 +156,14 @@ func main() {
 		newConfig, _ := json.Marshal(config)
 		file.WriteString(string(newConfig))
 	})
+
+	http.HandleFunc("/main.js", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, interfaceConfig.JSTemplatePath)
+	})
+
+	http.HandleFunc("/styles.css", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, interfaceConfig.CSSTemplatePath)
+	})
+
 	http.ListenAndServe(fmt.Sprintf(":%v", interfaceConfig.Port), nil)
 }
