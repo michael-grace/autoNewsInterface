@@ -1,0 +1,42 @@
+html {
+    padding: 10px;
+}
+
+.news-area {
+    float: left;
+}
+
+p {
+    clear: both;
+    margin: 1em;
+}
+
+.selbtn {
+    display: block;
+    margin: 10px;
+}
+
+#auto-selector {
+    width: 30%;
+    display: none;
+}
+
+.autonewsform {
+    margin: 5em;
+}
+
+#selector-box-title {
+    text-align: center;
+}
+
+.checkbox {
+    color: green;
+    display: none;
+    float: left;
+    vertical-align: middle;
+}
+
+.sel-text {
+    float: left;
+    vertical-align: middle;
+}

@@ -35,9 +35,12 @@ for (i = 0; i < listElements.length; i++) {
     listElements[i].style.display = "inline";
 }
 
-document.getElementById("autoselector").style.display = "block";
+document.getElementById("auto-selector").style.display = "block";
+
+completeABox(1)
+completeABox(2)
 
 var t = new Date()
 document.getElementById("text1").innerText = t.getHours() + ":59:45 - Switch to AutoNews";
-document.getElementById("text2").innerText = (t.getHours() + 1) + ":00:00 - No Action";
-document.getElementById("text3").innerText = (t.getHours() + 1) + ":02:02 - Switch to Jukebox";
+document.getElementById("text2").innerText = ((t.getHours() + 1) % 24) + ":00:00 - No Action";
+document.getElementById("text3").innerText = ((t.getHours() + 1) % 24) + ":02:02 - Switch to Jukebox";

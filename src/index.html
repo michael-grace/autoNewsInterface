@@ -1,4 +1,4 @@
-<html style="padding:10px;">
+<html>
     <head>
         <title>URY AutoNews Selection</title>
         <h2>AutoNews Selection</h2>
@@ -22,22 +22,22 @@
             </div>
         {{ end }}
 
-        <div style="float: left;">
+        <div class="news-area">
 
             {{ if not .Timeslots }}
-                <p style="clear:both; margin: 1em;"> No Shows Available Today </p>
+                <p> No Shows Available Today </p>
             {{ end }}
 
             {{range .Timeslots}}
-                <button class="selbtn btn btn-outline-primary" style="display:block; margin: 10px" onclick="button({{.Timeslotid}})" id=btn{{.Timeslotid}}>{{.Title}}</button>
+                <button class="selbtn btn btn-outline-primary" onclick="button({{.Timeslotid}})" id=btn{{.Timeslotid}}>{{.Title}}</button>
             {{end}}
 
         </div>
 
-        <div style="float: left;">
+        <div class="news-area">
             {{range .Timeslots}}
 
-                <form id="form{{.Timeslotid}}" class="autonewsform" style="margin:5em;">
+                <form id="form{{.Timeslotid}}" class="autonewsform">
                     <input type="hidden"  name="timeslotid" value="{{.Timeslotid}}">
                     <input type="checkbox" name="S" {{if .AutoNewsStart}}checked{{end}}>
                     <label for="S">AutoNews at Start of Show</label>
@@ -51,25 +51,25 @@
             {{end}}
         </div>
 
-        <p style="clear:both; margin: 1em;">Any problems, please contact Computing team (#computing on the URY Slack)</p>
+        <p>Any problems, please contact Computing team (#computing on the URY Slack)</p>
 
-        <div style="width: 30%; display: none;" id="autoselector">
+        <div id="auto-selector">
 
             <ul class="list-group">
                 <!-- Don't Judge Tables. This was horrible to implement otherwise :) -->
-                <li class="list-group-item list-group-item-primary" style="text-align: center;">AutoSelector </li>
+                <li class="list-group-item list-group-item-primary" id="selector-box-title">AutoSelector </li>
                 
                     <li class="list-group-item list-group-item-dark selector-component" id="li1">
                         <table>
                             <td>
                                 <div class="spinner-border" id="spinner1"></div>
-                                <div style="float: left vertical-align: middle;"><h1 style="color: green; display: none;" id="check1">✓</h1></div>
+                                <h1 class="checkbox" id="check1">✓</h1>
                             </td>
                             <td>
 
                             </td>
                             <td>
-                                <div style="float: left; vertical-align: middle;" id="text1"></div>
+                                <div id="text1" class="sel-text"></div>
                             </td>
                         </table>
                     </li>
@@ -78,13 +78,13 @@
                         <table>
                             <td>
                                 <div class="spinner-border" id="spinner2"></div>
-                                <div style="float: left vertical-align: middle;"><h1 style="color: green; display: none;" id="check2">✓</h1></div>
+                                <h1 class="checkbox" id="check2">✓</h1>
                             </td>
                             <td>
 
                             </td>
                             <td>
-                                <div style="float: left; vertical-align: middle;" id="text2"></div>
+                                <div id="text2"></div>
                             </td>
                         </table>
                     </li>
@@ -93,13 +93,13 @@
                         <table>
                             <td>
                                 <div class="spinner-border" id="spinner3"></div>
-                                <div style="float: left vertical-align: middle;"><h1 style="color: green; display: none;" id="check3">✓</h1></div>
+                               <h1 class="checkbox" id="check3">✓</h1>
                             </td>
                             <td>
 
                             </td>
                             <td>
-                                <div style="float: left; vertical-align: middle;" id="text3"></div>
+                                <div id="text3"></div>
                             </td>
                         </table>
                     </li>
