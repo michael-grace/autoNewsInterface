@@ -25,11 +25,15 @@ type thonkyConfigBoi struct {
 	AutonewsRequests []configAutoNews `json:"autonewsRequests"`
 }
 
+type interfaceConfig struct {
+	SwitcherConfigFilePath string `json:"switcherConfigFilePath"`
+	APIKey                 string `json:"apiKey"`
+	Port                   int    `json:"port"`
+	TemplatePath           string `json:"templatePath"`
+}
+
 const (
-	// Make sure these are right if you've built something pulled from GitHub
-	configFilePath = "config.json"
-	apiKey         = "*****" // Website Public API-Key
-	port           = 3000
+	interfaceConfigFilePath = "interface_config.json"
 )
 
 func autonewsCheck(timeslotid int, config thonkyConfigBoi) [2]bool {
@@ -42,14 +46,23 @@ func autonewsCheck(timeslotid int, config thonkyConfigBoi) [2]bool {
 }
 
 func main() {
-	session, err := myradio.NewSession(apiKey)
+	interfaceConfigFile, err := os.Open(interfaceConfigFilePath)
+	if err != nil {
+		panic(err)
+	}
+	defer interfaceConfigFile.Close()
+	byteValue, _ := ioutil.ReadAll(interfaceConfigFile)
+	var interfaceConfig interfaceConfig
+	json.Unmarshal(byteValue, &interfaceConfig)
+
+	session, err := myradio.NewSession(interfaceConfig.APIKey)
 	if err != nil {
 		panic(err)
 	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 
-		configFile, err := os.Open(configFilePath)
+		configFile, err := os.Open(interfaceConfig.SwitcherConfigFilePath)
 		if err != nil {
 			panic(err)
 		}
@@ -124,14 +137,14 @@ func main() {
 			DataDriven: ok,
 		}
 
-		tmpl, err := template.ParseFiles("index.html")
+		tmpl, err := template.ParseFiles(interfaceConfig.TemplatePath)
 		if err != nil {
 			panic(err)
 		}
 
 		tmpl.Execute(w, data)
 
-		file, err := os.Create(configFilePath)
+		file, err := os.Create(interfaceConfig.SwitcherConfigFilePath)
 
 		if err != nil {
 			return
@@ -141,5 +154,5 @@ func main() {
 		newConfig, _ := json.Marshal(config)
 		file.WriteString(string(newConfig))
 	})
-	http.ListenAndServe(fmt.Sprintf(":%v", port), nil)
+	http.ListenAndServe(fmt.Sprintf(":%v", interfaceConfig.Port), nil)
 }
