@@ -51,6 +51,61 @@
 
         <p style="clear:both; margin: 1em;">Any problems, please contact Computing team (#computing on the URY Slack)</p>
 
+        <div style="width: 30%; display: none;" id="autoselector">
+
+            <ul class="list-group">
+                <!-- Don't Judge Tables. This was horrible to implement otherwise :) -->
+                <li class="list-group-item list-group-item-primary" style="text-align: center;">AutoSelector </li>
+                
+                    <li class="list-group-item list-group-item-dark selector-component" id="li1">
+                        <table>
+                            <td>
+                                <div class="spinner-border" id="spinner1"></div>
+                                <div style="float: left vertical-align: middle;"><h1 style="color: green; display: none;" id="check1">✓</h1></div>
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+                                <div style="float: left; vertical-align: middle;" id="text1"></div>
+                            </td>
+                        </table>
+                    </li>
+
+                    <li class="list-group-item list-group-item-dark selector-component" id="li2">
+                        <table>
+                            <td>
+                                <div class="spinner-border" id="spinner2"></div>
+                                <div style="float: left vertical-align: middle;"><h1 style="color: green; display: none;" id="check2">✓</h1></div>
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+                                <div style="float: left; vertical-align: middle;" id="text2"></div>
+                            </td>
+                        </table>
+                    </li>
+
+                    <li class="list-group-item list-group-item-dark selector-component" id="li3">
+                        <table>
+                            <td>
+                                <div class="spinner-border" id="spinner3"></div>
+                                <div style="float: left vertical-align: middle;"><h1 style="color: green; display: none;" id="check3">✓</h1></div>
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+                                <div style="float: left; vertical-align: middle;" id="text3"></div>
+                            </td>
+                        </table>
+                    </li>
+
+            </ul>
+
+        </div>
+
         <script>
 
             function hideforms(){
@@ -73,6 +128,27 @@
             hideforms();
             setTimeout(function(){document.getElementById("success-alert").style.display = "none";}, 3000);
 
+            setTimeout(function(){window.location.reload();}, 5000);
+
+            function completeABox(boxNo){
+                document.getElementById("spinner" + boxNo).style.display = "none";
+                document.getElementById("check" + boxNo).style.display = "block";
+                document.getElementById("li" + boxNo).classList.remove("list-group-item-dark");
+                document.getElementById("li" + boxNo).classList.add("list-group-item-success");
+            }
+
+            var listElements = document.getElementsByClassName("selector-component");
+            for (i = 0; i<listElements.length; i++){
+                listElements[i].style.display = "inline";
+            }
+
+            document.getElementById("autoselector").style.display = "block";
+
+            var t = new Date()
+            document.getElementById("text1").innerText = t.getHours() + ":59:45 - Switch to AutoNews";
+            document.getElementById("text2").innerText = (t.getHours()+1) + ":00:00 - No Action";
+            document.getElementById("text3").innerText = (t.getHours()+1) + ":02:02 - Switch to Jukebox";
+        
         </script>
 
     </body>
